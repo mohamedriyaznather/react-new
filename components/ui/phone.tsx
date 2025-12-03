@@ -10,6 +10,7 @@ import flags from "react-phone-number-input/flags";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { E164Number } from "libphonenumber-js/core";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import {
   Command,
@@ -39,9 +40,10 @@ export function PhoneInput({
   className?: string;
 }) {
   // initialize to incoming value OR default to "+91"
-  const [internalValue, setInternalValue] = React.useState<Value | undefined>(
-    () => value ?? "+91"
-  );
+const [internalValue, setInternalValue] = React.useState<Value | undefined>(
+  () => (value ?? "+91") as E164Number
+);
+
 
   // keep internal state synced when parent controls the value prop
   React.useEffect(() => {
@@ -215,11 +217,11 @@ function FlagComponent({
 
   return (
     <span className="w-6 h-4 overflow-hidden rounded-sm bg-muted flex items-center justify-center">
-      {Flag ? (
-        <Flag title={countryName} style={{ width: "100%", height: "100%" }} />
-      ) : (
-        <span className="text-[10px] text-muted-foreground">--</span>
-      )}
-    </span>
+  {Flag ? (
+    <Flag title={countryName ?? ""} />
+  ) : (
+    <span className="text-[10px] text-muted-foreground">--</span>
+  )}
+</span>
   );
 }
